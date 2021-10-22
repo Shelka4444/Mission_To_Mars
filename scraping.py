@@ -1,9 +1,18 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[3]:
+
+
 # Import Splinter, BeautifulSoup, and Pandas
 from splinter import Browser
 from bs4 import BeautifulSoup as soup
 import pandas as pd
 import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
+
+
+# In[4]:
 
 
 def scrape_all():
@@ -19,12 +28,16 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": mars_hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
     # Stop webdriver and return data
     browser.quit()
     return data
+
+
+# In[5]:
 
 
 def mars_news(browser):
@@ -47,17 +60,20 @@ def mars_news(browser):
         # Use the parent element to find the first 'a' tag and save it as 'news_title'
         news_title = slide_elem.find('div', class_='content_title').get_text()
         # Use the parent element to find the paragraph text
-        news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
+        news_paragraph = slide_elem.find('div', class_='article_teaser_body').get_text()
 
     except AttributeError:
         return None, None
 
-    return news_title, news_p
+    return news_title, news_paragraph
+
+
+# In[6]:
 
 
 def featured_image(browser):
     # Visit URL
-    url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
+    url = 'https://spaceimages-mars.com'
     browser.visit(url)
 
     # Find and click the full image button
@@ -77,9 +93,13 @@ def featured_image(browser):
         return None
 
     # Use the base url to create an absolute url
-    img_url = f'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/{img_url_rel}'
+    img_url = f'https://spaceimages-mars.com/{img_url_rel}'
 
     return img_url
+
+
+# In[7]:
+
 
 def mars_facts():
     # Add try/except for error handling
@@ -97,10 +117,54 @@ def mars_facts():
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
 
+
+# In[8]:
+
+
+def mars_hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+
+    browser.visit(url)
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    # Get a List of All the Hemispheres
+    element = browser.find_by_css("a.product-item img")
+    images = len(element)
+    for item in range(images):
+        hemisphere = {}
+
+        browser.find_by_css("a.product-item img")[item].click()
+
+        # Find Sample Image Anchor Tag & Extract <href>
+        sample_element = browser.links.find_by_text("Sample").first
+        hemisphere["img_url"] = sample_element["href"]
+
+        # Get Title
+        hemisphere["title"] = browser.find_by_css("h2.title").text
+
+        # Append Hemisphere Object to List
+        hemisphere_image_urls.append(hemisphere)
+
+        # Navigate Back
+        browser.back()
+        
+    return(hemisphere_image_urls)
+
+
+# In[9]:
+
+
 if __name__ == "__main__":
 
     # If running as script, print scraped data
     print(scrape_all())
+
+
+# In[ ]:
 
 
 
