@@ -7,21 +7,22 @@
     <title>Mission to Mars</title>
     <link rel="stylesheet" 
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
-<body>
-    <div class="container">
+<body style="background-color: #001a66">
+    <div class="container-fluid" style="padding-top: 40px">
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
             <p><a class="btn btn-primary btn-lg" href="/scrape"
-                        role="button"> Scrape New Data</a></p>
+                        role="button"> <strong>Scrape New Data</strong></a></p>
         </div>
     </div>
     <!-- Mars News -->
     <div class="row" id="mars-news">
-        <div class="col-md-12">
+        <div class="col-md-12" style="padding-left: 40px">
             <div class="media">
-                <div class="media-body">
-                    <h2>Latest Mars News</h2>
+                <div class="media-body" style="color:whitesmoke">
+                    <h2><u>Latest Mars News</u></h2>
                     <h4 class="media-heading">{{mars.news_title}}</h4>
                     <p>{{mars.news_paragraph}}</p>
                 </div>
@@ -30,8 +31,8 @@
     </div>
     <!-- Featured Image -->
     <div class="row" id="mars-featured-image">
-        <div class="col-md-8">
-            <h2> Featured Mars Image</h2>
+        <div class="col-lg-8 col-md-8 col-sm-12" style="padding-left: 40px; padding-bottom: 20px" >
+            <h2 style="color:whitesmoke"> Featured Mars Image</h2>
             <img 
             src="{{mars.featured_image}}" 
             class="img-responsive" 
@@ -39,9 +40,10 @@
             />
         </div>
         <!-- Mars Facts -->
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4" style="padding-right: 40px; padding-left: 40px; padding-top: 20px; padding-bottom: 20px;
+                                      background-color:whitesmoke; color:#001a66">
             <div class="row" id="mars-facts">
-                <h4>Mars Facts</h4>
+                <h2 style="text-align:center">Mars Facts</h2>
                 {{ mars.facts | safe }}
             </div>
         </div>
@@ -49,15 +51,15 @@
       <!-- Section for Mars Hemispheres -->
       <div class="row" id="mars-hemispheres">
         <div class="page-header">
-          <h2 class="text-center">Mars Hemispheres</h2>
+          <h2 class="text-center" style="color:whitesmoke">Mars Hemispheres</h2>
         </div>
 
         {% for hemisphere in mars.hemispheres %}
-        <div class="col-md-6">
-          <div class="thumbnail">
+        <div class="col-md-3" style="padding-left: 40px" style="padding-right: 40px">
+          <div class="thumbnail" style="background-color:whitesmoke">
             <img src="{{hemisphere.img_url}}" alt="Oops, sorry there should be an image here.">
             <div class="caption">
-              <h3>{{hemisphere.title}}</h3>
+              <h3 style="text-align:center; color:#001a66">{{hemisphere.title}}</h3>
             </div>
           </div>
         </div>
